@@ -1,24 +1,41 @@
 <!DOCTYPE html>
 <html>
   <body>
+    <h1>Sci-Fi Exploration</h1>
+    <div id="description">You are in the control room.</div>
     <form id="commandForm">
-      <input type="text" id="commandInput" placeholder="Type your command here" />
+      <input type="text" id="commandInput" placeholder="Type your command" />
       <button type="submit">Submit</button>
     </form>
 
     <script>
-const commands = {
-  look: "You are in a small, cozy room with a wooden table.",
-  "go north": "You head north and see a forest path.",
-  take: "You pick up a shiny key from the floor."
-};
+      const rooms = {
+        control: {
+          description: "You are in the control room, surrounded by glowing screens.",
+          exits: ["hallway"]
+        },
+        hallway: {
+          description: "A long metallic hallway stretches out in front of you, with doors on each side.",
+          exits: ["control", "crew quarters 1", "crew quarters 2", "crew quarters 3", "crew quarters 4"]
+        },
+        "crew quarters 1": {
+          description: "This room is filled with personal items—photos and a journal left behind.",
+          exits: ["hallway"]
+        },
+        "crew quarters 2": {
+          description: "A quiet room with a strange humming sound coming from a hidden panel.",
+          exits: ["hallway"]
+        },
+        "crew quarters 3": {
+          description: "An empty bunk with a flickering light above, casting odd shadows.",
+          exits: ["hallway"]
+        },
+        "crew quarters 4": {
+          description: "A room with a holographic display, showing unknown star systems.",
+          exits: ["hallway"]
+        }
+      };
 
-document.getElementById('commandForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const command = document.getElementById('commandInput').value.toLowerCase();
-  const response = commands[command] || "I don't understand that command.";
-  alert(response);
-});
-    </script>
-  </body>
-</html>
+      let currentRoom = "control";
+
+      document.getElementById('commandForm').
