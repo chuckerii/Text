@@ -7,12 +7,18 @@
     </form>
 
     <script>
-      document.getElementById('commandForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const command = document.getElementById('commandInput').value;
-        console.log('You typed: ' + command);
-        // Here, you can add your game logic based on the commands
-      });
+const commands = {
+  look: "You are in a small, cozy room with a wooden table.",
+  "go north": "You head north and see a forest path.",
+  take: "You pick up a shiny key from the floor."
+};
+
+document.getElementById('commandForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const command = document.getElementById('commandInput').value.toLowerCase();
+  const response = commands[command] || "I don't understand that command.";
+  alert(response);
+});
     </script>
   </body>
 </html>
