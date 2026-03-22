@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Text Adventure</title>
+  </head>
+  <body>
+    <button onclick="startListening()">Speak Command</button>
+    <script>
+      function startListening() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.onresult = function(event) {
+          const command = event.results[0][0].transcript;
+          console.log('You said: ' + command);
+          // Here you can add your game logic based on the command
+        };
+        recognition.start();
+      }
+    </script>
+  </body>
+</html>
