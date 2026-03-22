@@ -1,41 +1,137 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h1>Sci-Fi Exploration</h1>
-    <div id="description">You are in the control room.</div>
-    <form id="commandForm">
-      <input type="text" id="commandInput" placeholder="Type your command" />
-      <button type="submit">Submit</button>
-    </form>
+<head>
+  <title>Sci-Fi Exploration</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00ffcc;
+      font-family: monospace;
+      padding: 20px;
+    }
 
-    <script>
-      const rooms = {
-        control: {
-          description: "You are in the control room, surrounded by glowing screens.",
-          exits: ["hallway"]
-        },
-        hallway: {
-          description: "A long metallic hallway stretches out in front of you, with doors on each side.",
-          exits: ["control", "crew quarters 1", "crew quarters 2", "crew quarters 3", "crew quarters 4"]
-        },
-        "crew quarters 1": {
-          description: "This room is filled with personal items—photos and a journal left behind.",
-          exits: ["hallway"]
-        },
-        "crew quarters 2": {
-          description: "A quiet room with a strange humming sound coming from a hidden panel.",
-          exits: ["hallway"]
-        },
-        "crew quarters 3": {
-          description: "An empty bunk with a flickering light above, casting odd shadows.",
-          exits: ["hallway"]
-        },
-        "crew quarters 4": {
-          description: "A room with a holographic display, showing unknown star systems.",
-          exits: ["hallway"]
+    #description {
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+
+    input, button {
+      font-family: monospace;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Sci-Fi Exploration</h1>
+
+  <div id="description">You are in the control room.</div>
+
+  <form id="commandForm">
+    <input type="text" id="commandInput" placeholder="Type a command..." autocomplete="off" />
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const rooms = {
+      control: {
+        name: "Control Room",
+        description: "You are in the control room, surrounded by glowing screens and blinking lights.",
+        exits: ["hallway"]
+      },
+      hallway: {
+        name: "Hallway",
+        description: "A long metallic hallway stretches out before you. Four doors line the walls.",
+        exits: ["control", "crew1", "crew2", "crew3", "crew4"]
+      },
+      crew1: {
+        name: "Crew Quarters 1",
+        description: "A small sleeping area with a neatly made bunk.",
+        exits: ["hallway"]
+      },
+      crew2: {
+        name: "Crew Quarters 2",
+        description: "This room hums softly. Something is still powered on.",
+        exits: ["hallway"]
+      },
+      crew3: {
+        name: "Crew Quarters 3",
+        description: "A messy room with clothes floating slightly in zero-g drift.",
+        exits: ["hallway"]
+      },
+      crew4: {
+        name: "Crew Quarters 4",
+        description: "A dark room. The lights flicker as you step in.",
+        exits: ["hallway"]
+      }
+    };
+
+    const randomDetails = [
+      "You notice a faint scratching sound in the walls.",
+      "A cold draft passes behind you.",
+      "Something briefly flickers on one of the panels.",
+      "You feel like you're being watched.",
+      "A distant metallic clang echoes through the ship.",
+      "Your footsteps sound louder than they should."
+    ];
+
+    let currentRoom = "control";
+
+    function getRandomDetail() {
+      return randomDetails[Math.floor(Math.random() * randomDetails.length)];
+    }
+
+    function updateDisplay(text) {
+      document.getElementById("description").innerText = text;
+    }
+
+    document.getElementById("commandForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const input = document.getElementById("commandInput").value.toLowerCase().trim();
+      document.getElementById("commandInput").value = "";
+
+      // LOOK command
+      if (input === "look") {
+        updateDisplay(
+          rooms[currentRoom].description + "\n\n" + getRandomDetail()
+        );
+        return;
+      }
+
+      // GO command (example: "go hallway" or "go crew1")
+      if (input.startsWith("go ")) {
+        const destination = input.replace("go ", "");
+
+        if (rooms[currentRoom].exits.includes(destination)) {
+          currentRoom = destination;
+          updateDisplay(
+            "You enter the " + rooms[currentRoom].name + ".\n\n" +
+            rooms[currentRoom].description + "\n\n" +
+            getRandomDetail()
+          );
+        } else {
+          updateDisplay("You can't go there from here.");
         }
-      };
+        return;
+      }
 
-      let currentRoom = "control";
+      // HELP command
+      if (input === "help") {
+        updateDisplay(
+          "Commands:\n" +
+          "- look\n" +
+          "- go hallway\n" +
+          "- go crew1 / crew2 / crew3 / crew4\n" +
+          "- help"
+        );
+        return;
+      }
 
-      document.getElementById('commandForm').
+      // Default
+      updateDisplay("I don't understand that command.");
+    });
+  </script>
+
+</body>
+</html>
